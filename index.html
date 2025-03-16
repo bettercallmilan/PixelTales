@@ -3,135 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D Jankovic Milan</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-        }
-
-        #game-container {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-            background-color: #90EE90;
-        }
-
-        #world {
-            width: 3000px;  /* Large world size */
-            height: 2000px;
-            position: absolute;
-            transform: translate(0, 0);
-            transition: transform 0.1s ease;
-            background-image: url('assets/background.png'); /* You'll add this */
-            background-size: cover;
-            image-rendering: pixelated;
-        }
-
-        #player {
-            width: 96px;  /* Increased character size */
-            height: 96px;
-            position: absolute;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
-
-        /* Placeholder for character sprites - you'll replace these with actual images */
-        .player-sprite {
-            width: 100%;
-            height: 100%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            position: absolute;
-            display: none;
-            image-rendering: pixelated;
-        }
-
-        .player-up { background-image: url('assets/idle_up.gif'); }
-        .player-down { background-image: url('assets/idle_fw.gif'); }
-        .player-left { background-image: url('assets/idle_l.gif'); }
-        .player-right { background-image: url('assets/idle_r.gif'); }
-        
-        /* Walking animations */
-        .walking .player-up { background-image: url('assets/run_up.gif'); }
-        .walking .player-down { background-image: url('assets/run_fw.gif'); }
-        .walking .player-left { background-image: url('assets/run_l.gif'); }
-        .walking .player-right { background-image: url('assets/run_r.gif'); }
-
-        .interactive-zone {
-            width: 96px;
-            height: 96px;
-            position: absolute;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .interactive-zone:hover {
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        .zone-icon {
-            width: 100%;
-            height: 100%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            image-rendering: pixelated;
-            /* You'll replace these with your custom sign images */
-            background-image: url('assets/sign.png');
-        }
-
-        .interaction-bubble {
-            position: absolute;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            min-width: 200px;
-            max-width: 400px;
-            display: none;
-            z-index: 100;
-            animation: popIn 0.2s ease;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .interaction-bubble h3 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
-
-        .interaction-bubble p {
-            margin: 0;
-            color: #666;
-        }
-
-        /* Walking animation classes */
-        .walking {
-            animation: bounce 0.4s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, -50%); }
-            50% { transform: translate(-50%, -55%); }
-        }
-
-        /* Environment decorations */
-        .decoration {
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            pointer-events: none;
-            image-rendering: pixelated;
-        }
-    </style>
+    <title>PixelTales</title>
+    <style href="styles.css"></style>
 </head>
 <body>
     <div id="game-container">
@@ -159,7 +32,7 @@
 // Game state
 const state = {
             player: {
-                x: 1500,  // Start in middle of world
+                x: 1500,
                 y: 1000,
                 speed: 5,
                 direction: 'down',
@@ -181,28 +54,21 @@ const state = {
                 x: 800, y: 600, 
                 title: "Instagram", 
                 content: "Click to visit my Instagram!",
-                url: "https://instagram.com/your-username",
+                url: "https://instagram.com/milan.sag",
                 icon: 'assets/sign.png'
             },
             { 
                 x: 1500, y: 800, 
                 title: "GitHub", 
                 content: "Check out my code repositories!",
-                url: "https://github.com/your-username",
+                url: "https://github.com/bettercallmilan",
                 icon: 'assets/sign.png'
             },
             { 
                 x: 2200, y: 1200, 
                 title: "Projects", 
                 content: "View my portfolio of projects!",
-                url: "https://your-portfolio-url.com",
-                icon: 'assets/sign.png'
-            },
-            { 
-                x: 1800, y: 1500, 
-                title: "Email", 
-                content: "Send me an email!",
-                url: "mailto:your-email@example.com",
+                url: "https://bettercallmilan.github.io",
                 icon: 'assets/sign.png'
             },
             { 
@@ -239,10 +105,8 @@ const state = {
             bubble.style.top = '-80px';
             zoneElement.appendChild(bubble);
 
-            // Add click handler
             zoneElement.addEventListener('click', () => {
                 if (zone.title === "Random Cat") {
-                    // Create a new window/tab with a random cat
                     window.open('https://cataas.com/cat?' + new Date().getTime(), '_blank');
                 } else if (zone.url) {
                     window.open(zone.url, '_blank');
@@ -251,15 +115,6 @@ const state = {
 
             world.appendChild(zoneElement);
         });
-
-        // Add random decorative elements
-        for (let i = 0; i < 50; i++) {
-            const decoration = document.createElement('div');
-            decoration.className = 'decoration';
-            decoration.style.left = Math.random() * state.worldBounds.width + 'px';
-            decoration.style.top = Math.random() * state.worldBounds.height + 'px';
-            world.appendChild(decoration);
-        }
 
         // Movement handling
         const keys = {
@@ -283,17 +138,14 @@ const state = {
         window.addEventListener('keyup', (e) => {
             if (keys.hasOwnProperty(e.key)) {
                 keys[e.key] = false;
-                // Check if any movement keys are still pressed
                 state.player.isMoving = Object.values(keys).some(key => key);
             }
         });
 
-        // Update player sprite based on direction
         function updateSprite() {
             Object.values(sprites).forEach(sprite => sprite.style.display = 'none');
             sprites[state.player.direction].style.display = 'block';
             
-            // Add/remove walking animation
             if (state.player.isMoving) {
                 player.classList.add('walking');
             } else {
@@ -306,15 +158,12 @@ const state = {
             const viewportWidth = container.clientWidth;
             const viewportHeight = container.clientHeight;
             
-            // Calculate camera position (center on player)
             state.camera.x = state.player.x - viewportWidth / 2;
             state.camera.y = state.player.y - viewportHeight / 2;
 
-            // Clamp camera to world bounds
             state.camera.x = Math.max(0, Math.min(state.camera.x, state.worldBounds.width - viewportWidth));
             state.camera.y = Math.max(0, Math.min(state.camera.y, state.worldBounds.height - viewportHeight));
 
-            // Apply camera transform
             world.style.transform = `translate(${-state.camera.x}px, ${-state.camera.y}px)`;
         }
 
@@ -328,23 +177,19 @@ const state = {
             if (keys.a || keys.ArrowLeft) dx -= state.player.speed;
             if (keys.d || keys.ArrowRight) dx += state.player.speed;
 
-            // Normalize diagonal movement
             if (dx !== 0 && dy !== 0) {
                 dx *= 0.707; // 1/√2
                 dy *= 0.707;
             }
 
-            // Update position
             state.player.x = Math.max(0, Math.min(state.player.x + dx, state.worldBounds.width));
             state.player.y = Math.max(0, Math.min(state.player.y + dy, state.worldBounds.height));
 
-            // Update direction
             if (dx > 0) state.player.direction = 'right';
             else if (dx < 0) state.player.direction = 'left';
             else if (dy < 0) state.player.direction = 'up';
             else if (dy > 0) state.player.direction = 'down';
 
-            // Update player position
             player.style.left = state.player.x + 'px';
             player.style.top = state.player.y + 'px';
         }
@@ -367,7 +212,6 @@ const state = {
             });
         }
 
-        // Game loop
         function gameLoop() {
             updateMovement();
             updateSprite();
@@ -376,10 +220,8 @@ const state = {
             requestAnimationFrame(gameLoop);
         }
 
-        // Start the game
         gameLoop();
 
-        // Handle window resize
         window.addEventListener('resize', updateCamera);
     </script>
 </body>
