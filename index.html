@@ -29,7 +29,6 @@
             right: player.querySelector('.player-right')
         };
         
-// Game state
 const state = {
             player: {
                 x: 1500,
@@ -48,7 +47,6 @@ const state = {
             }
         };
 
-        // Interactive zones data
         const zones = [
             { 
                 x: 800, y: 600, 
@@ -80,7 +78,6 @@ const state = {
             }
         ];
 
-        // Create interactive zones
         zones.forEach((zone, index) => {
             const zoneElement = document.createElement('div');
             zoneElement.className = 'interactive-zone';
@@ -116,7 +113,6 @@ const state = {
             world.appendChild(zoneElement);
         });
 
-        // Movement handling
         const keys = {
             w: false,
             a: false,
@@ -153,7 +149,6 @@ const state = {
             }
         }
 
-        // Camera following
         function updateCamera() {
             const viewportWidth = container.clientWidth;
             const viewportHeight = container.clientHeight;
@@ -167,7 +162,6 @@ const state = {
             world.style.transform = `translate(${-state.camera.x}px, ${-state.camera.y}px)`;
         }
 
-        // Smooth movement system
         function updateMovement() {
             let dx = 0;
             let dy = 0;
@@ -194,7 +188,6 @@ const state = {
             player.style.top = state.player.y + 'px';
         }
 
-        // Interaction system
         function updateInteractions() {
             const zones = document.querySelectorAll('.interactive-zone');
             zones.forEach(zone => {
